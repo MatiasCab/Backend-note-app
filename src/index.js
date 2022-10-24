@@ -10,8 +10,12 @@ const morgan = require('morgan');
 const { getPlaces } = require('./cities/cities');
 
 const CURRENT_VERSION = 'v1';
-const CITIES_RESOURCE = 'cities';
-const CITIES_ENDPOINT = `/${CURRENT_VERSION}/${CITIES_RESOURCE}`;
+const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
+const NOTES_ENDPOINT = `/${CURRENT_VERSION}/notes`;
+
+const notes = [{ id: '1', color:'dark', title: 'Spiderman', placeId:"1", body:'texto de la note', temperature:'20', date:'2020/12/10'},
+{ id: '2', color:'dark', title: 'Titulo 2', placeId:"2", body:'texto de la note2', temperature:'30', date:'2020/11/10'}
+];
 
 // defining the Express app
 const app = express();
@@ -32,6 +36,20 @@ app.use(morgan('combined'));
 app.get(CITIES_ENDPOINT, async (req, res) => {
     res.send(await getPlaces());
 });
+
+router.get(NOTES_ENDPOINT, function(req, res, next) {
+  res.send(notes);
+});
+
+router.post(NOTES_ENDPOINT, async (req, res) =>{
+  const newPost = req.body;
+  notes.push(newPost);
+  res.status(200).send('Note added');
+})
+
+router.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
+  const updatedNote = req.body;
+})
 
 // starting the server
 app.listen(3001, () => {
