@@ -7,6 +7,12 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const { getPlaces } = require('./cities/cities');
+
+const CURRENT_VERSION = 'v1';
+const CITIES_RESOURCE = 'cities';
+const CITIES_ENDPOINT = `/${CURRENT_VERSION}/${CITIES_RESOURCE}`;
+
 // defining the Express app
 const app = express();
 
@@ -23,8 +29,8 @@ app.use(cors());
 app.use(morgan('combined'));
 
 // defining an endpoint to return all ads
-app.get('/', (req, res) => {
-  
+app.get(CITIES_ENDPOINT, async (req, res) => {
+    res.send(await getPlaces());
 });
 
 // starting the server
