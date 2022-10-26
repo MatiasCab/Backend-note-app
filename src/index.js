@@ -14,19 +14,14 @@ const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
 const NOTES_ENDPOINT = `/${CURRENT_VERSION}/notes`;
 
 const notes = {
-<<<<<<< HEAD
-    '1': { color:'bg-warning', title: 'Spiderman', placeId:"1", body:'texto de la note', date:'2020/12/10'},
-    '2': { color:'bg-success', title: 'Titulo 2', placeId:"2", body:'texto de la note2', date:'2020/11/10'}
-=======
-    '1': { id: '1', color:'dark', title: 'Spiderman', placeId:"1", body:'texto de la note', date:'2020/12/10'},
-    '2': { id: '2', color:'dark', title: 'Titulo 2', placeId:"2", body:'texto de la note2', date:'2020/11/10'}
->>>>>>> eb5506fdf56eec14ada7ffa3e44ff22528025cf1
+    '1': { id: '1', color:'bg-warning', title: 'Spiderman', placeId:"1", body:'texto de la note', date:'2020/12/10'},
+    '2': { id: '2', color:'bg-success', title: 'Titulo 2', placeId:"2", body:'texto de la note2', date:'2020/11/10'}
 };
 
 // defining the Express app
 const app = express();
 
-// adding Helmet to enhance your API's security
+// adding Helmet to enhance your API's securitys
 app.use(helmet());
 
 // using bodyParser to parse JSON bodies into JS objects
