@@ -46,13 +46,11 @@ app.get(NOTES_ENDPOINT, function(req, res, next) {
 app.get(NOTES_ENDPOINT + '/:id', (req, res) => {
   const id = req.params.id;
 
-  for (let note of notes) {
-      if (note.id === id) {
-          res.json(note);
-          return;
-      }
+  if (notes[id]) {
+    res.send(notes[id]);
+  } else {
+    res.status(404).send( { error: true, message: 'Note not found' } );
   }
-  res.status(404).send('Note not found');
 });
 
 app.post(NOTES_ENDPOINT, async (req, res) =>{
