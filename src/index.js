@@ -13,9 +13,8 @@ const CURRENT_VERSION = 'v1';
 const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
 const NOTES_ENDPOINT = `/${CURRENT_VERSION}/notes`;
 
-const notes = [{ id: '1', color:'dark', title: 'Spiderman', placeId:"1", body:'texto de la note', temperature:'20', date:'2020/12/10'},
-{ id: '2', color:'dark', title: 'Titulo 2', placeId:"2", body:'texto de la note2', temperature:'30', date:'2020/11/10'}
-];
+const NOTES = { '1': { color:'dark', title: 'Spiderman', placeId:"1", body:'texto de la note', temperature:'20', date:'2020/12/10' },
+ '1': { color:'dark', title: 'Titulo 2', placeId:"2", body:'texto de la note2', temperature:'30', date:'2020/11/10' } };
 
 // defining the Express app
 const app = express();
@@ -38,12 +37,12 @@ app.get(CITIES_ENDPOINT, async (req, res) => {
 });
 
 router.get(NOTES_ENDPOINT, function(req, res, next) {
-  res.send(notes);
+  res.send(NOTES);
 });
 
 router.post(NOTES_ENDPOINT, async (req, res) =>{
   const newPost = req.body;
-  notes.push(newPost);
+  NOTES[newPost.id] = newPost;
   res.status(200).send('Note added');
 })
 
