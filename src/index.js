@@ -14,14 +14,14 @@ const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
 const NOTES_ENDPOINT = `/${CURRENT_VERSION}/notes`;
 
 const notes = {
-    '1': { id: '1', color:'dark', title: 'Spiderman', placeId:"1", body:'texto de la note', date:'2020/12/10'},
-    '2': { id: '2', color:'dark', title: 'Titulo 2', placeId:"2", body:'texto de la note2', date:'2020/11/10'}
+    '1': { id: '1', color:'bg-warning', title: 'Spiderman', placeId:"1", body:'texto de la note', date:'2020/12/10'},
+    '2': { id: '2', color:'bg-success', title: 'Titulo 2', placeId:"2", body:'texto de la note2', date:'2020/11/10'}
 };
 
 // defining the Express app
 const app = express();
 
-// adding Helmet to enhance your API's security
+// adding Helmet to enhance your API's securitys
 app.use(helmet());
 
 // using bodyParser to parse JSON bodies into JS objects
@@ -57,14 +57,16 @@ app.get(NOTES_ENDPOINT + '/:id', (req, res) => {
 
 app.post(NOTES_ENDPOINT, async (req, res) =>{
   const newPost = req.body;
+  const newPostId = `${Math.floor(Math.random() * 1000000)}`;
+  newPost.id = newPostId;
   notes[newPost.id] = newPost;
-  res.status(200).send('Note added successfully');
+  res.status(200).send({ id: newPost.id, success: true, message: 'Note added successfully' });
 });
 
 app.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
   const updatedNote = req.body;
   notes[req.params.id] = updatedNote;
-  res.status(200).send('Note updated successfully')
+  res.status(200).send({ id: req.params.id, success: true, message: 'Note updated successfully' })
 });
 
 // starting the server
