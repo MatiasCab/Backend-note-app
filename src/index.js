@@ -44,14 +44,16 @@ app.get(NOTES_ENDPOINT, function(req, res, next) {
 
 app.post(NOTES_ENDPOINT, async (req, res) =>{
   const newPost = req.body;
+  const newPostId = `${Math.floor(Math.random() * 1000000)}`;
+  newPost.id = newPostId;
   notes[newPost.id] = newPost;
-  res.status(200).send('Note added successfully');
+  res.status(200).send({ id: newPost.id, success: true, message: 'Note added successfully' });
 });
 
 app.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
   const updatedNote = req.body;
   notes[req.params.id] = updatedNote;
-  res.status(200).send('Note updated successfully')
+  res.status(200).send({ id: req.params.id, success: true, message: 'Note updated successfully' })
 });
 
 // starting the server
