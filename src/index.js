@@ -14,8 +14,8 @@ const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
 const NOTES_ENDPOINT = `/${CURRENT_VERSION}/notes`;
 
 const notes = {
-    '1': { id: '1', color:'bg-warning', title: 'Spiderman', placeId:"1", body:'texto de la note', date:'2020/12/10'},
-    '2': { id: '2', color:'bg-success', title: 'Titulo 2', placeId:"2", body:'texto de la note2', date:'2020/11/10'}
+    '1': { id: '1', clase:'bg-warning', titulo: 'Spiderman', ciudad:"1", cuerpo:'texto de la note', temperatura: '', date:'26/10/2022 19:23'},
+    '2': { id: '2', clase:'bg-success', titulo: 'Titulo 2', ciudad:"2", cuerpo:'texto de la note2', temperatura: '', date:'26/10/2022 20:20'}
 };
 
 // defining the Express app
@@ -45,7 +45,6 @@ app.get(NOTES_ENDPOINT, function(req, res, next) {
 
 app.get(NOTES_ENDPOINT + '/:id', (req, res) => {
   const id = req.params.id;
-
   if (notes[id]) {
     res.send(notes[id]);
   } else {
