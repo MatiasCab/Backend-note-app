@@ -1,5 +1,5 @@
 // ./src/index.js
-
+require('dotenv').config({ path: './config.env' });
 // importing the dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,7 +7,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const { getPlaces } = require('./cities/cities');
+const { getPlaces } = require('./src/cities/cities');
+const { connectToServer } = require('./src/server/db/conn');
 
 const CURRENT_VERSION = 'v1';
 const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
@@ -35,7 +36,7 @@ app.use(morgan('combined'));
 
 // defining an endpoint to return all ads
 app.get(CITIES_ENDPOINT, async (req, res) => {
-  res.send(await getPlaces());
+  getPlaces(res);
 });
 
 app.get(NOTES_ENDPOINT, function(req, res, next) {
@@ -66,7 +67,12 @@ app.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
   res.status(200).send({ id: req.params.id, success: true, message: 'Note updated successfully' })
 });
 
-// starting the server
-app.listen(3001, () => {
-  console.log('listening on port 3001');
-});
+
+function start() {
+  // starting the server
+  app.listen(3001, () => {
+    console.log('listening on port 3001');
+  });
+}
+
+connectToServer(start);

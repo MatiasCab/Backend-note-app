@@ -1,12 +1,19 @@
 
+const { getDb } = require('../server/db/conn');
 
-const PLACES = [
-    {lat: "-34.8941",long: "-56.0675", city: "Montevideo"},
-    {lat: "-34.6118",long: "-58.4173", city: "Buenos Aires"},
-];
+const PLACES_COLLECTION_NAME = 'places';
 
-async function getPlaces(){
-    return PLACES;
+async function getPlaces(res){
+    getDb()
+    .collection(PLACES_COLLECTION_NAME)
+    .find({})
+    .toArray(function (err, result) {
+        if (err) {
+            res.status(400).send("Error fetching places!");
+        } else {
+            res.json(result);
+        }
+    });
 }
 
 module.exports = {
