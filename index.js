@@ -13,6 +13,7 @@ const { connectToServer } = require('./src/server/db/conn');
 const CURRENT_VERSION = 'v1';
 const CITIES_ENDPOINT = `/${CURRENT_VERSION}/places`;
 const NOTES_ENDPOINT = `/${CURRENT_VERSION}/notes`;
+const NOTES_COLLECTION = 'notes';
 
 const notes = {
     '1': { id: '1', clase:'bg-warning', titulo: 'Spiderman', ciudad:"1", cuerpo:'texto de la note', temperatura: '', date:'26/10/2022 19:23'},
@@ -67,6 +68,18 @@ app.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
   res.status(200).send({ id: req.params.id, success: true, message: 'Note updated successfully' })
 });
 
+app.delete(NOTES_ENDPOINT + '/:id', async (req, res) => {
+  const noteId = req.params.id;
+  getDb()
+  .collection(NOTES_COLLECTION)
+  .deleteOne({ id: noteId }, function (err, _result) {
+    if (err) {
+      res.status(400).send({ error: true, message: `Error deleting note with id ${listingQuery.listing_id}!` });
+    } else {
+      res.status(200).send({ success: true, message: `Successfully deleted note with id ${listingQuery.listing_id}!` })
+    }
+  });
+});
 
 function start() {
   // starting the server
