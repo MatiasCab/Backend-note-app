@@ -85,8 +85,30 @@ app.post(NOTES_ENDPOINT, async (req, res) =>{
 
 app.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
   const updatedNote = req.body;
-  notes[req.params.id] = updatedNote;
-  res.status(200).send({ id: req.params.id, success: true, message: 'Note updated successfully' })
+  const noteId = req.params.id;
+  
+  const updatedDocument = {
+    $set: {
+      clase: updatedNote.clase,
+      titulo: updatedNote.titulo,
+      ciudad: updatedNote.ciudad,
+      cuerpo: updatedNote.cuerpo,
+      fechaFormateada: updatedNote.fechaFormateada
+
+    }
+  };
+  getDb()
+  .collection(NOTES_COLLECTION)
+  .updateOne({ _id: noteId }, updatedDocument, function (err, _result){
+    if (err) {
+      res.status(400).send(`Cant update` + noteId);
+    } else {
+      res.status(200).send({ id: req.params.id, success: true, message: 'Note updated successfully' })
+      console.log("Document with id: " + req.params.id + ' was updated');
+    }
+  });
+
+  
 });
 
 app.delete(NOTES_ENDPOINT + '/:id', async (req, res) => {
