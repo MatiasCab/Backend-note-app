@@ -41,17 +41,29 @@ app.get(CITIES_ENDPOINT, async (req, res) => {
 });
 
 app.get(NOTES_ENDPOINT, function(req, res, next) {
-  res.send(Object.values(notes));
+  getDb()
+  .collection(NOTES_COLLECTION).find({}).toArray(function(err, result) {
+    if (err) {
+      res.status(400).send({ error: true, message: `Error inserting note` });
+    } else {
+      res.status(200).send(result);
+    }
+  });
+  
 });
 
 
 app.get(NOTES_ENDPOINT + '/:id', (req, res) => {
   const id = req.params.id;
-  if (notes[id]) {
-    res.send(notes[id]);
-  } else {
-    res.status(404).send( { error: true, message: 'Note not found' } );
-  }
+  getDb()
+  .collection(NOTES_COLLECTION).insertOne(newPost, function (err, _result) {
+    if (err) {
+      res.status(400).send({ error: true, message: `Error inserting note` });
+    } else {
+      res.status(200).send({ id: newPost.id, success: true, message: 'Note added successfully' })
+    }
+  });
+
 });
 
 app.post(NOTES_ENDPOINT, async (req, res) =>{
@@ -89,8 +101,8 @@ app.delete(NOTES_ENDPOINT + '/:id', async (req, res) => {
 
 function start() {
   // starting the server
-  app.listen(3002, () => {
-    console.log('listening on port 3002');
+  app.listen(3001, () => {
+    console.log('listening on port 3001');
   });
 }
 
