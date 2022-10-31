@@ -57,9 +57,15 @@ app.get(NOTES_ENDPOINT + '/:id', (req, res) => {
 app.post(NOTES_ENDPOINT, async (req, res) =>{
   const newPost = req.body;
   const newPostId = `${Math.floor(Math.random() * 1000000)}`;
-  newPost.id = newPostId;
-  notes[newPost.id] = newPost;
-  res.status(200).send({ id: newPost.id, success: true, message: 'Note added successfully' });
+  newPost._id = newPostId;
+  getDb()
+  .collection(NOTES_COLLECTION).insertOne(newPost, function (err, _result) {
+    if (err) {
+      res.status(400).send({ error: true, message: `Error inserting note` });
+    } else {
+      res.status(200).send({ id: newPost.id, success: true, message: 'Note added successfully' })
+    }
+  });
 });
 
 app.put(NOTES_ENDPOINT + '/:id', async (req, res) => {
@@ -83,8 +89,8 @@ app.delete(NOTES_ENDPOINT + '/:id', async (req, res) => {
 
 function start() {
   // starting the server
-  app.listen(3001, () => {
-    console.log('listening on port 3001');
+  app.listen(3002, () => {
+    console.log('listening on port 3002');
   });
 }
 
