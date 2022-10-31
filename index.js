@@ -7,7 +7,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const { getPlaces } = require('./src/cities/cities');
+const { getPlaces, getPlace } = require('./src/cities/cities');
 const { connectToServer, getDb } = require('./src/server/db/conn');
 
 const CURRENT_VERSION = 'v1';
@@ -38,6 +38,9 @@ app.use(morgan('combined'));
 // defining an endpoint to return all ads
 app.get(CITIES_ENDPOINT, async (req, res) => {
   getPlaces(res);
+});
+app.get(CITIES_ENDPOINT+"/:name", async (req, res) => {
+  getPlace(res, req.params.name);
 });
 
 app.get(NOTES_ENDPOINT, function(req, res, next) {
